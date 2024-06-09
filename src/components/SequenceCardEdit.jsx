@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -14,14 +13,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useDelayStore } from "store/delayStore";
+import { useDelayStore } from "@/store/delayStore";
 
 import { Copy, Trash, Ungroup } from "lucide-react";
-
-import { Clock, Pencil, Mail, Ellipsis } from "lucide-react";
-
+import { Clock, Mail, Ellipsis, Pencil } from "lucide-react";
 import { Minus, Plus } from "lucide-react";
-
 import { Separator } from "@/components/ui/separator";
 
 const Line = () => (
@@ -29,11 +25,17 @@ const Line = () => (
 );
 
 const SequenceCardEdit = ({ sequenceIndex, onClick }) => {
-  const { sequences, updateSequenceDelay, removeSequence, duplicateSequence } =
-    useSequenceStore();
-  const { delay, delayType } = useDelayStore(); 
+  const {
+    sequences,
+    updateSequenceDelay,
+    removeSequence,
+    duplicateSequence,
+    delay,
+    delayType,
+    selectedDays,
+  } = useSequenceStore();
+  // const { delay, delayType } = useDelayStore();
   const sequence = sequences.find((seq) => seq.id === sequenceIndex);
-  // const delay = sequence?.delay ?? 0;
 
   const handleIncrease = (event) => {
     event.stopPropagation();
@@ -57,7 +59,15 @@ const SequenceCardEdit = ({ sequenceIndex, onClick }) => {
     event.stopPropagation();
   };
 
+  const iconBgColor =
+    !sequence?.emailSubject && !sequence?.emailContent
+      ? "bg-red-50"
+      : "bg-emerald-50";
 
+  const iconColor =
+    !sequence?.emailSubject && !sequence?.emailContent
+      ? "text-red-600"
+      : "text-emerald-300";
 
   const textColor =
     !sequence?.emailSubject && !sequence?.emailContent
@@ -73,71 +83,38 @@ const SequenceCardEdit = ({ sequenceIndex, onClick }) => {
     if (!sequence?.emailSubject && !sequence?.emailContent) {
       return "Content Required";
     }
-    // if (sequence?.emailContent) {
-    //   return sequence?.emailSubject || "";
-    // }
     return sequence?.emailSubject;
   };
 
   return (
     <div
       id={`sequence-card-${sequenceIndex}`}
-      className={`relative min-h-28 w-[20rem] cursor-pointer rounded-xl border ${borderColor} bg-white text-center text-sm text-slate-400 shadow-2xl`}
+      className={`relative min-h-28 w-[20rem] cursor-pointer rounded-xl border ${borderColor} bg-white text-center text-sm text-slate-400 shadow-2xl transition-colors delay-0 duration-100`}
       onClick={onClick}
     >
-      {/* <Line /> */}
       <div className="relative flex items-center justify-between rounded-t-2xl bg-gray-50">
         <div className="flex h-10 items-center justify-start gap-2 pl-2">
           <Clock size={14} />
           <span className="flex h-10 items-center text-xs text-blue-500">
-            {delay === 0 ? "Sent Immediately" : `Wait for ${delay} ${delayType}`}
+            {sequence.delay === 0
+              ? "Sent Immediately"
+              : `Wait for ${sequence.delay} ${sequence.delayType}`}
           </span>
         </div>
-        {/* <Popover>
-          <PopoverTrigger onClick={handlePopoverClick} className="px-4">
-            <Pencil size={14} className="-translate-x-1 hover:text-blue-500" />
-          </PopoverTrigger>
-          <PopoverContent className="absolute -left-[18.5rem] -top-[3.5rem] px-4 py-2">
-            <div className="relative flex w-full items-center justify-start">
-              <span className="mr-2">Wait</span>
-              <Button
-                variant="ghost"
-                className="rounded-r-none border bg-white hover:border-blue-500"
-                onClick={handleDecrease}
-                disabled={delay === 0}
-              >
-                <Minus size={14} />
-              </Button>
-              <Input
-                id="delay-input"
-                className="w-14 rounded-none ring-transparent focus:border-blue-500 focus-visible:ring-0"
-                value={delay}
-                readOnly
-              />
-              <Button
-                variant="ghost"
-                className="rounded-l-none border bg-white hover:border-blue-500"
-                onClick={handleIncrease}
-              >
-                <Plus size={14} />
-              </Button>
-              <span className="ml-2">days</span>
-              <Trash
-                className="absolute right-0 cursor-pointer text-slate-400 hover:text-red-600"
-                size={18}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleReset(0);
-                }}
-              />
-            </div>
-          </PopoverContent>
-        </Popover> */}
+        <div className="pr-2">
+          <span className="text-xs">
+            {sequence.selectedDays.length < 7
+              ? `Selected days: ${sequence.selectedDays}`
+              : ""}
+          </span>
+        </div>
       </div>
       <div className="flex h-full w-full items-center justify-between">
         <div className="flex min-w-fit flex-grow items-center justify-start gap-3 p-4">
           <span className="text-black">{sequenceIndex}</span>
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50 text-emerald-300">
+          <span
+            className={`flex h-10 w-10 items-center justify-center rounded-full ${iconBgColor} ${iconColor} transition-colors delay-0 duration-100`}
+          >
             <Mail size={18} />
           </span>
           <div className="flex flex-col items-start justify-center ">

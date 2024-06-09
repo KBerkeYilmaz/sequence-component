@@ -40,10 +40,6 @@ const QuillEditor = ({ value, onChange }) => {
       theme: "snow",
     });
 
-    // quillInstance.on("text-change", () => {
-    //   const html = quillInstance.root.innerHTML;
-    //   onChange(html);
-    // });
   }, []);
 
   return (

@@ -9,23 +9,34 @@ import SequenceMailSettings from "components/SequenceMailSettings";
 export default function NewHome() {
   const [activeSheet, setActiveSheet] = React.useState(null);
 
-  const { addSequence, sequences } = useSequenceStore();
+  const { addSequence, sequences, removeSequence } = useSequenceStore();
 
-  // Set the initial active sequence to the first sequence in the array
+  // Sets the initial active sequence to the first sequence in the array
   useEffect(() => {
-    if (sequences.length > 0) {
+    if (sequences.length > 0 && activeSheet === null) {
       setActiveSheet(sequences[0].id);
     }
-  }, [sequences]);
+  }, [sequences, activeSheet]);
 
   const handleSheetToggle = (id) => {
-    setActiveSheet((prevState) => (prevState === id ? null : id));
+    setActiveSheet(id);
+  };
+
+  const handleSequenceDelete = (id) => {
+    removeSequence(id);
+    if (activeSheet === id) {
+      setActiveSheet(null); // Reset activeSheet if the deleted sequence was active
+    }
   };
 
   return (
-    <div className="flex flex-col items-center lg:items-start justify-center gap-4 overflow-hidden py-12 lg:flex-row">
-      {activeSheet && (
-        <SequenceMailSettings key={activeSheet} sequenceId={activeSheet} />
+    <div className="flex flex-col items-center justify-center gap-4 overflow-hidden py-12 lg:flex-row lg:items-start">
+      {sequences.some((sequence) => sequence.id === activeSheet) && (
+        <SequenceMailSettings
+          key={activeSheet}
+          sequenceId={activeSheet}
+          onDelete={() => handleSequenceDelete(activeSheet)}
+        />
       )}
 
       <div className="flex max-h-screen flex-col gap-2 rounded-lg border-t bg-background p-4 shadow-xl ">

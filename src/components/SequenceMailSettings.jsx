@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { dummyMail } from "@/data/dummyList";
 import QuillEditor from "./QuilEditor";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { DAYS } from "@/data/days";
 import {
   Dialog,
   DialogClose,
@@ -28,16 +28,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useDelayStore } from "@/store/delayStore"; // Import delay store
+import { DropdownMenuSeparator } from "./ui/dropdown-menu";
 
-const OPTIONS = dummyMail.map((item) => ({
-  label: `${item.name} (${item.email})`,
-  value: item.email,
-  disable: false,
-}));
-
-const SequenceMailSettings = ({ sequenceId }) => {
-  const { sequences, updateSequence, removeSequence } = useSequenceStore();
+const SequenceMailSettings = ({ sequenceId, onDelete }) => {
+  const {
+    sequences,
+    updateSequence,
+    updateSequenceDelay,
+    updateSequenceDelayType,
+    updateSelectedDays,
+  } = useSequenceStore();
   const sequence = sequences.find((seq) => seq.id === sequenceId);
 
   const [selectedSender, setSelectedSender] = useState([]);
@@ -45,18 +45,14 @@ const SequenceMailSettings = ({ sequenceId }) => {
   const [mailContent, setMailContent] = useState("");
   const [forcedSenders, setForcedSenders] = useState(false);
 
-  // Use delayStore for delay and delayType
-  const { delay, delayType, setDelay, setDelayType } = useDelayStore();
-
   useEffect(() => {
     if (sequence) {
       setSelectedSender(sequence.senders || []);
       setMailSubject(sequence.emailSubject || "");
       setMailContent(sequence.emailContent || "");
       setForcedSenders(sequence.forcedSenders || false);
-      setDelay(sequence.delay || 0);
     }
-  }, [sequence, sequenceId, setDelay]);
+  }, [sequence, sequenceId]);
 
   const handleUpdateSequence = () => {
     updateSequence(sequenceId, {
@@ -64,10 +60,10 @@ const SequenceMailSettings = ({ sequenceId }) => {
       emailSubject: mailSubject,
       emailContent: mailContent,
       forcedSenders: forcedSenders,
-      delay: delay,
-      delayType: delayType,
     });
   };
+
+  if (!sequence) return null;
 
   return (
     <div
@@ -79,17 +75,21 @@ const SequenceMailSettings = ({ sequenceId }) => {
         <Input
           placeholder="Write a subject to charm your audience &#10024;"
           className="w-full rounded-none border-b border-l-0 border-r-0 border-t-0 border-slate-400 pl-0 text-2xl placeholder:text-lg focus:outline-none focus-visible:ring-0"
-          value={mailSubject}
-          onChange={(e) => setMailSubject(e.target.value)}
+          value={sequence.emailSubject}
+          onChange={(e) =>
+            updateSequence(sequenceId, { emailSubject: e.target.value })
+          }
         />
       </div>
       <div className="flex items-center justify-start gap-4">
         <div className="flex flex-col">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="w-fit text-xs px-4">
+              <Button variant="outline" className="w-fit px-4 text-xs">
                 Send this mail after
-                {delay > 0 ? ` ${delay} ${delayType}` : ""}
+                {sequence.delay > 0
+                  ? ` ${sequence.delay} ${sequence.delayType}`
+                  : ""}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-fit">
@@ -97,13 +97,26 @@ const SequenceMailSettings = ({ sequenceId }) => {
                 <span>Send this mail after</span>
                 <Input
                   type="number"
+                  id="delay-value"
                   max="9999"
+                  min="0"
                   className="w-[70px]"
-                  value={delay}
-                  onChange={(e) => setDelay(e.target.value)}
+                  value={sequence.delay}
+                  onChange={(e) =>
+                    updateSequenceDelay(
+                      sequenceId,
+                      parseInt(e.target.value, 10),
+                    )
+                  }
                 />
-                <Select value={delayType} onValueChange={setDelayType}>
-                  <SelectTrigger className="w-[180px]">
+                <Select
+                  value={sequence.delayType}
+                  onValueChange={(value) =>
+                    updateSequenceDelayType(sequenceId, value)
+                  }
+                  id="delay-type"
+                >
+                  <SelectTrigger className="w-[100px]">
                     <SelectValue placeholder="Select delay type" />
                   </SelectTrigger>
                   <SelectContent>
@@ -114,6 +127,33 @@ const SequenceMailSettings = ({ sequenceId }) => {
                   </SelectContent>
                 </Select>
                 <span>after last email</span>
+              </div>
+              <DropdownMenuSeparator className="border-1 border-slate-600" />
+              <div className="flex justify-between px-4 pb-4 pt-2">
+                {DAYS.map((day) => (
+                  <div
+                    key={day.value}
+                    className="flex w-5 flex-col items-center justify-center"
+                  >
+                    <label
+                      className="block text-sm"
+                      htmlFor={`day-${day.value}`}
+                    >
+                      {day.label}
+                    </label>
+                    <Input
+                      className="justify-center"
+                      type="checkbox"
+                      id={`day-${day.value}`}
+                      name={day.value}
+                      checked={
+                        Array.isArray(sequence.selectedDays) &&
+                        sequence.selectedDays.includes(day.value)
+                      }
+                      onChange={() => updateSelectedDays(sequenceId, day.value)}
+                    />
+                  </div>
+                ))}
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -181,7 +221,7 @@ const SequenceMailSettings = ({ sequenceId }) => {
                   <Button
                     type="button"
                     variant="destructive"
-                    onClick={() => removeSequence(sequenceId)}
+                    onClick={onDelete}
                   >
                     Delete
                   </Button>
@@ -191,7 +231,11 @@ const SequenceMailSettings = ({ sequenceId }) => {
           </Dialog>
         </div>
       </div>
-      <QuillEditor value={mailContent} onChange={setMailContent} />
+      <QuillEditor
+        value={mailContent}
+        onChange={setMailContent}
+        onBlur={() => updateSequence(sequenceId, { emailContent: mailContent })}
+      />
       <Button onClick={handleUpdateSequence}>Publish</Button>
     </div>
   );

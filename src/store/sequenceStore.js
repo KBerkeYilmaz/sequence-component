@@ -12,6 +12,8 @@ export const useSequenceStore = create(
           emailSubject: "",
           emailContent: "",
           delay: 0,
+          delayType: "days",
+          selectedDays: ["mon", "tue", "wed", "thr", "fri", "sat", "sun"], 
         },
       ],
       nextId: 2,
@@ -26,6 +28,8 @@ export const useSequenceStore = create(
               emailSubject: "",
               emailContent: "",
               delay: 0,
+              delayType: "days",
+              selectedDays: ["mon", "tue", "wed", "thr", "fri", "sat", "sun"], 
             },
           ],
           nextId: state.nextId + 1,
@@ -45,6 +49,27 @@ export const useSequenceStore = create(
         set((state) => ({
           sequences: state.sequences.map((sequence) =>
             sequence.id === id ? { ...sequence, delay: newDelay } : sequence,
+          ),
+        })),
+      updateSequenceDelayType: (id, newDelayType) =>
+        set((state) => ({
+          sequences: state.sequences.map((sequence) =>
+            sequence.id === id
+              ? { ...sequence, delayType: newDelayType }
+              : sequence,
+          ),
+        })),
+      updateSelectedDays: (id, day) =>
+        set((state) => ({
+          sequences: state.sequences.map((sequence) =>
+            sequence.id === id
+              ? {
+                  ...sequence,
+                  selectedDays: sequence.selectedDays.includes(day)
+                    ? sequence.selectedDays.filter((d) => d !== day)
+                    : [...sequence.selectedDays, day],
+                }
+              : sequence
           ),
         })),
       updateSequence: (id, updates) =>
