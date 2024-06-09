@@ -8,18 +8,16 @@ import "katex/dist/katex.min.css";
 import parse from "html-react-parser";
 
 // Ensure hljs and katex are available globally
-// window.hljs = hljs;
-// window.katex = katex;
+window.hljs = hljs;
+window.katex = katex;
 
-const QuillEditor = () => {
+const QuillEditor = ({ value, onChange }) => {
   const editorRef = useRef(null);
-  const [preview, setPreview] = useState(false);
-  const [content, setContent] = useState("");
 
   useEffect(() => {
-    const quill = new Quill(editorRef.current, {
+    const quillInstance = new Quill(editorRef.current, {
       modules: {
-        syntax: { hljs },
+        syntax: { hljs }, // Syntax highlighting
         toolbar: [
           [{ font: [] }, { size: [] }],
           [{ align: [] }],
@@ -41,6 +39,11 @@ const QuillEditor = () => {
       placeholder: "Compose an epic...",
       theme: "snow",
     });
+
+    // quillInstance.on("text-change", () => {
+    //   const html = quillInstance.root.innerHTML;
+    //   onChange(html);
+    // });
   }, []);
 
   return (
@@ -48,8 +51,7 @@ const QuillEditor = () => {
       <div
         id="toolbar-container"
         style={{ borderTopRightRadius: "24px" }}
-      >
-      </div>
+      ></div>
       <div
         id="editor"
         ref={editorRef}

@@ -6,7 +6,9 @@ export const useDelayStore = create(
   persist(
     (set) => ({
       delay: 0,
+      delayType: "days",
       setDelay: (newDelay) => set({ delay: newDelay }),
+      setDelayType: (newDelayType) => set({ delayType: newDelayType }),
       resetDelay: () => set({ delay: 0 }),
       setDelayTo: (value) => set({ delay: value }),
     }),
@@ -16,4 +18,3 @@ export const useDelayStore = create(
     },
   ),
 );
-

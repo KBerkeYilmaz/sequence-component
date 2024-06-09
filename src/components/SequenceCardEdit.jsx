@@ -14,6 +14,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useDelayStore } from "store/delayStore";
+
 import { Copy, Trash, Ungroup } from "lucide-react";
 
 import { Clock, Pencil, Mail, Ellipsis } from "lucide-react";
@@ -29,8 +31,9 @@ const Line = () => (
 const SequenceCardEdit = ({ sequenceIndex, onClick }) => {
   const { sequences, updateSequenceDelay, removeSequence, duplicateSequence } =
     useSequenceStore();
+  const { delay, delayType } = useDelayStore(); 
   const sequence = sequences.find((seq) => seq.id === sequenceIndex);
-  const delay = sequence?.delay ?? 0;
+  // const delay = sequence?.delay ?? 0;
 
   const handleIncrease = (event) => {
     event.stopPropagation();
@@ -54,54 +57,26 @@ const SequenceCardEdit = ({ sequenceIndex, onClick }) => {
     event.stopPropagation();
   };
 
+
+
   const textColor =
-    (!sequence?.emailSubject &&
-      !sequence?.emailContent &&
-      !sequence?.senders.length) ||
-    (sequence?.emailSubject &&
-      sequence?.emailContent &&
-      !sequence?.senders.length) ||
-    (!sequence?.emailSubject &&
-      !sequence?.emailContent &&
-      sequence?.senders.length > 0)
+    !sequence?.emailSubject && !sequence?.emailContent
       ? "text-red-600"
       : "text-slate-400";
 
   const borderColor =
-    (!sequence?.emailSubject &&
-      !sequence?.emailContent &&
-      !sequence?.senders.length) ||
-    (sequence?.emailSubject &&
-      sequence?.emailContent &&
-      !sequence?.senders.length) ||
-    (!sequence?.emailSubject &&
-      !sequence?.emailContent &&
-      sequence?.senders.length > 0)
+    !sequence?.emailSubject && !sequence?.emailContent
       ? "border-red-600"
       : "border-slate-200";
 
   const getStatusText = () => {
-    if (
-      !sequence?.emailSubject &&
-      !sequence?.emailContent &&
-      sequence?.senders.length === 0
-    ) {
-      return "Action Needed";
-    }
-    if (sequence?.senders.length === 0) {
-      return "Error on sender(s)";
-    }
-    if (
-      !sequence?.emailSubject &&
-      !sequence?.emailContent &&
-      sequence?.senders.length > 0
-    ) {
+    if (!sequence?.emailSubject && !sequence?.emailContent) {
       return "Content Required";
     }
-    if (sequence?.emailContent) {
-      return sequence?.emailSubject || "";
-    }
-    return "";
+    // if (sequence?.emailContent) {
+    //   return sequence?.emailSubject || "";
+    // }
+    return sequence?.emailSubject;
   };
 
   return (
@@ -115,10 +90,10 @@ const SequenceCardEdit = ({ sequenceIndex, onClick }) => {
         <div className="flex h-10 items-center justify-start gap-2 pl-2">
           <Clock size={14} />
           <span className="flex h-10 items-center text-xs text-blue-500">
-            {delay === 0 ? "Sent Immediately" : `Wait for ${delay} days`}
+            {delay === 0 ? "Sent Immediately" : `Wait for ${delay} ${delayType}`}
           </span>
         </div>
-        <Popover>
+        {/* <Popover>
           <PopoverTrigger onClick={handlePopoverClick} className="px-4">
             <Pencil size={14} className="-translate-x-1 hover:text-blue-500" />
           </PopoverTrigger>
@@ -157,7 +132,7 @@ const SequenceCardEdit = ({ sequenceIndex, onClick }) => {
               />
             </div>
           </PopoverContent>
-        </Popover>
+        </Popover> */}
       </div>
       <div className="flex h-full w-full items-center justify-between">
         <div className="flex min-w-fit flex-grow items-center justify-start gap-3 p-4">
