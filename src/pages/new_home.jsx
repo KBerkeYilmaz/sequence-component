@@ -42,13 +42,21 @@ export default function NewHome() {
                   variant="outline"
                   className="text-xs w-40"
                 >
-                  Send this email
+                  Adjust Schedule
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
-                <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+              <DropdownMenuContent className="w-fit">
+                <DropdownMenuLabel>Adjust Schedule</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuCheckboxItem
+                <div>
+                  <span>Send at</span>
+                  <Input
+                    type="date"
+                    className="w-40"
+                  />
+                    
+                </div>
+                {/* <DropdownMenuCheckboxItem
                   checked={showStatusBar}
                   onCheckedChange={setShowStatusBar}
                 >
@@ -66,7 +74,7 @@ export default function NewHome() {
                   onCheckedChange={setShowPanel}
                 >
                   Panel
-                </DropdownMenuCheckboxItem>
+                </DropdownMenuCheckboxItem> */}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -77,36 +85,33 @@ export default function NewHome() {
                 className="text-blue-500"
               />
             </Button>
-            <Button variant={"ghost"}>
-              <Trash
-                size={20}
-                className="text-blue-500"
-              />
+            <Button
+              variant={"ghost"}
+              className="text-blue-500 hover:text-red-600"
+            >
+              <Trash size={20} />
             </Button>
           </div>
         </div>
         <QuillEditor />
-        <Button>
-          Publish
-        </Button>
+        <Button>Publish</Button>
       </div>
       <div className="bg-background p-4 flex-col flex gap-2 border-t shadow-xl rounded-lg max-h-screen ">
         <div className="w-full flex gap-2 justify-center p-4 rounded-md bg-red-400 text-background">
           <MailPlus />
           <h2 className="text-center">Email</h2>
         </div>
-        <div className="flex flex-col gap-2 overflow-y-scroll scroll-">
-          <SequenceCardEdit />
-          {/* <SequenceCardEdit />
+        <div className="flex flex-col gap-2 mt-4 overflow-y-scroll" style={{scrollbarColor: "transparent transparent"}}>
           <SequenceCardEdit />
           <SequenceCardEdit />
           <SequenceCardEdit />
           <SequenceCardEdit />
           <SequenceCardEdit />
           <SequenceCardEdit />
-          <SequenceCardEdit /> */}
+          <SequenceCardEdit />
+          <SequenceCardEdit />
+          <SequenceCardEdit />
         </div>
-        <Separator className="my-4 h-1" />
         <Button>Add Email</Button>
       </div>
     </div>
