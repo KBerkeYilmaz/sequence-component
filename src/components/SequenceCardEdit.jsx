@@ -1,11 +1,4 @@
-import React from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import React, { useMemo } from "react";
 import { useSequenceStore } from "@/store/sequenceStore";
 import {
   DropdownMenu,
@@ -13,11 +6,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useDelayStore } from "@/store/delayStore";
 
 import { Copy, Trash, Ungroup } from "lucide-react";
 import { Clock, Mail, Ellipsis, Pencil } from "lucide-react";
-import { Minus, Plus } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 const Line = () => (
@@ -31,53 +22,40 @@ const SequenceCardEdit = ({ sequenceIndex, onClick }) => {
     removeSequence,
     duplicateSequence,
     delay,
-    delayType,
-    selectedDays,
   } = useSequenceStore();
-  // const { delay, delayType } = useDelayStore();
   const sequence = sequences.find((seq) => seq.id === sequenceIndex);
-
-  const handleIncrease = (event) => {
-    event.stopPropagation();
-    updateSequenceDelay(sequenceIndex, delay + 1);
-  };
-
-  const handleDecrease = (event) => {
-    event.stopPropagation();
-    if (delay > 0) updateSequenceDelay(sequenceIndex, delay - 1);
-  };
 
   const handleReset = (value = 0) => {
     updateSequenceDelay(sequenceIndex, value);
-  };
-
-  const handlePopoverClick = (event) => {
-    event.stopPropagation();
   };
 
   const handleDropdownMenuClick = (event) => {
     event.stopPropagation();
   };
 
-  const iconBgColor =
-    !sequence?.emailSubject && !sequence?.emailContent
+  const iconBgColor = useMemo(() => {
+    return !sequence?.emailSubject && !sequence?.emailContent
       ? "bg-red-50"
       : "bg-emerald-50";
+  }, [sequence?.emailSubject, sequence?.emailContent]);
 
-  const iconColor =
-    !sequence?.emailSubject && !sequence?.emailContent
+  const iconColor = useMemo(() => {
+    return !sequence?.emailSubject && !sequence?.emailContent
       ? "text-red-600"
       : "text-emerald-300";
+  }, [sequence?.emailSubject, sequence?.emailContent]);
 
-  const textColor =
-    !sequence?.emailSubject && !sequence?.emailContent
+  const textColor = useMemo(() => {
+    return !sequence?.emailSubject && !sequence?.emailContent
       ? "text-red-600"
       : "text-slate-400";
+  }, [sequence?.emailSubject, sequence?.emailContent]);
 
-  const borderColor =
-    !sequence?.emailSubject && !sequence?.emailContent
+  const borderColor = useMemo(() => {
+    return !sequence?.emailSubject && !sequence?.emailContent
       ? "border-red-600"
       : "border-slate-200";
+  }, [sequence?.emailSubject, sequence?.emailContent]);
 
   const getStatusText = () => {
     if (!sequence?.emailSubject && !sequence?.emailContent) {
@@ -89,7 +67,7 @@ const SequenceCardEdit = ({ sequenceIndex, onClick }) => {
   return (
     <div
       id={`sequence-card-${sequenceIndex}`}
-      className={`relative min-h-28 w-[20rem] cursor-pointer rounded-xl border ${borderColor} bg-white text-center text-sm text-slate-400 shadow-2xl transition-colors delay-0 duration-100`}
+      className={`relative min-h-28 w-[20rem] cursor-pointer rounded-xl border ${borderColor} duration-250 bg-white text-center text-sm text-slate-400 shadow-2xl transition-colors delay-0 ease-out`}
       onClick={onClick}
     >
       <div className="relative flex items-center justify-between rounded-t-2xl bg-gray-50">
@@ -113,7 +91,7 @@ const SequenceCardEdit = ({ sequenceIndex, onClick }) => {
         <div className="flex min-w-fit flex-grow items-center justify-start gap-3 p-4">
           <span className="text-black">{sequenceIndex}</span>
           <span
-            className={`flex h-10 w-10 items-center justify-center rounded-full ${iconBgColor} ${iconColor} transition-colors delay-0 duration-100`}
+            className={`flex h-10 w-10 items-center justify-center rounded-full ${iconBgColor} ${iconColor} duration-250 transition-colors delay-0 ease-out`}
           >
             <Mail size={18} />
           </span>
@@ -175,4 +153,4 @@ const SequenceCardEdit = ({ sequenceIndex, onClick }) => {
   );
 };
 
-export default SequenceCardEdit;
+export default React.memo(SequenceCardEdit);;

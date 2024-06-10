@@ -6,6 +6,7 @@ import hljs from "highlight.js";
 import katex from "katex";
 import "katex/dist/katex.min.css";
 import parse from "html-react-parser";
+import QuillResizeImage from 'quill-resize-image';
 
 // Ensure hljs and katex are available globally
 window.hljs = hljs;
@@ -39,7 +40,6 @@ const QuillEditor = ({ value, onChange }) => {
       placeholder: "Compose an epic...",
       theme: "snow",
     });
-
   }, []);
 
   return (

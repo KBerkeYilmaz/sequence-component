@@ -1,0 +1,21 @@
+.quill .ql-container {
+  border-bottom-left-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+  background: #fefcfc;
+}
+
+/* Snow Theme */
+.quill .ql-snow.ql-toolbar {
+  display: block;
+  background: #eaecec;
+  border-top-left-radius: 0.5em;
+  border-top-right-radius: 0.5em;
+  max-width: 1050px;
+}
+
+.quill .ql-editor {
+  min-height: 36rem;
+  max-height: 40rem;
+  overflow-y: scroll;
+  max-width: 1050px;
+}

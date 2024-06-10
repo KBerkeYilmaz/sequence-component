@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import QuillEditor from "./QuilEditor";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DAYS } from "@/data/days";
+import Editor from "components/Editor/Editor";
 import {
   Dialog,
   DialogClose,
@@ -62,6 +63,11 @@ const SequenceMailSettings = ({ sequenceId, onDelete }) => {
       forcedSenders: forcedSenders,
     });
   };
+
+  const memoizedSelectedDays = useMemo(
+    () => sequence.selectedDays || [],
+    [sequence.selectedDays],
+  );
 
   if (!sequence) return null;
 
@@ -146,10 +152,7 @@ const SequenceMailSettings = ({ sequenceId, onDelete }) => {
                       type="checkbox"
                       id={`day-${day.value}`}
                       name={day.value}
-                      checked={
-                        Array.isArray(sequence.selectedDays) &&
-                        sequence.selectedDays.includes(day.value)
-                      }
+                      checked={memoizedSelectedDays.includes(day.value)}
                       onChange={() => updateSelectedDays(sequenceId, day.value)}
                     />
                   </div>
@@ -231,10 +234,11 @@ const SequenceMailSettings = ({ sequenceId, onDelete }) => {
           </Dialog>
         </div>
       </div>
-      <QuillEditor
-        value={mailContent}
-        onChange={setMailContent}
-        onBlur={() => updateSequence(sequenceId, { emailContent: mailContent })}
+      <Editor
+        placeholder={"Write something..."}
+        // value={mailContent}
+        // onChange={setMailContent}
+        // onBlur={() => updateSequence(sequenceId, { emailContent: mailContent })}
       />
       <Button onClick={handleUpdateSequence}>Publish</Button>
     </div>
