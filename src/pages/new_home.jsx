@@ -40,7 +40,7 @@ export default function NewHome() {
       )}
 
       <div className="flex max-h-screen flex-col gap-2 rounded-lg border-t bg-background p-4 shadow-xl ">
-        <div className="flex w-full justify-center gap-2 rounded-md bg-red-400 p-4 text-background">
+        <div className="flex w-full justify-center gap-2 rounded-md bg-red-500 p-4 text-background">
           <MailPlus />
           <h2 className="text-center">Email</h2>
         </div>

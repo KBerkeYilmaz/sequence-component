@@ -2,7 +2,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Mail } from "lucide-react";
-import { useSequenceStore } from "@/store/sequenceStore";
+import useAutomationStore from "@/store/automationStore";
 import {
   Drawer,
   DrawerClose,
@@ -18,11 +18,11 @@ const Line = () => (
   <div className="absolute top-0 z-10 h-10 w-[1px] bg-gray-400"></div>
 );
 
-const NewSequenceOptionsCircle = ({ isOpen, onOpen, onClose }) => {
-  const { addSequence } = useSequenceStore();
+const AutomationNewElementCircle = ({ isOpen, onOpen, onClose }) => {
+  const addFlow = useAutomationStore((state) => state.addSequence);
 
   const handleAddSequence = () => {
-    addSequence();
+    addFlow();
     onClose();
   };
 
@@ -33,7 +33,7 @@ const NewSequenceOptionsCircle = ({ isOpen, onOpen, onClose }) => {
         <DrawerTrigger asChild>
           <Button
             variant="outline"
-            className="z-50 h-8 w-6 rounded-full focus:outline-none hover:scale-110 transition-transform duration-300 ease-in-out "
+            className="z-50 h-8 w-6 rounded-full transition-transform duration-300 ease-in-out hover:scale-110 focus:outline-none "
             onClick={onOpen}
           >
             +
@@ -76,4 +76,4 @@ const NewSequenceOptionsCircle = ({ isOpen, onOpen, onClose }) => {
   );
 };
 
-export default NewSequenceOptionsCircle;
+export default AutomationNewElementCircle;

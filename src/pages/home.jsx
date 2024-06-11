@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { dummyMail } from "@/data/dummyList"; // Assuming dummyMail is your data source
+import { dummyMail } from "@/data/dummyList"; 
 import Sequence from "@/components/Sequence";
 import useSenderStore from "@/store/senderStore";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -7,7 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 const OPTIONS = dummyMail.map((item) => ({
   label: `${item.name} (${item.email})`,
   value: item.email,
-  disable: false, // Assuming you want to set `disable` to false by default
+  disable: false, 
 }));
 
 export default function Home() {
