@@ -1,7 +1,9 @@
 import { create } from "zustand";
 import { applyEdgeChanges, applyNodeChanges, addEdge } from "reactflow";
 
-const nodeSpacing = 200;
+const nodeSpacing = 200; // Horizontal spacing between nodes
+const rowSpacing = 150; // Vertical spacing between rows
+const maxNodesPerRow = 5;
 
 const useFlowStore = create((set, get) => ({
   nodes: [],
@@ -32,15 +34,16 @@ const useFlowStore = create((set, get) => ({
     let nodes = get().nodes;
     let edges = get().edges;
 
-    if (nodes.length >= 6) return; // Maximum 5 starter nodes + 1 end node
-
     const newNodeId = (nodes.length + 1).toString();
     newNode.id = newNodeId;
 
-    const prevNode = nodes[nodes.length - 1];
+    // Determine the row and column for the new node
+    const row = Math.floor((nodes.length - 1) / maxNodesPerRow); // Adjust for initial node
+    const col = (nodes.length - 1) % maxNodesPerRow;
+
     newNode.position = {
-      x: prevNode.position.x + nodeSpacing, // position based on previous node
-      y: 20,
+      x: col * nodeSpacing + 10, // position based on column
+      y: row * rowSpacing + 20, // position based on row
     };
     nodes = [...nodes, newNode];
 
@@ -52,13 +55,23 @@ const useFlowStore = create((set, get) => ({
     };
     edges = [...edges, newEdge];
 
+    // Update end node position
     const endNodeIndex = nodes.findIndex((node) => node.id === "end");
     if (endNodeIndex !== -1) {
       const endNode = nodes[endNodeIndex];
-      endNode.position = {
-        x: ((nodes.length - 2) * nodeSpacing + 38) / 2, // center end node based on number of nodes
-        y: 280,
-      };
+      if (nodes.length >= 7) {
+        endNode.position = {
+          x: 410, // Set a constant x position
+          y: (row + 1) * rowSpacing + 20, // Adjust y position based on row
+        };
+      } else {
+        const currentRowNodes =
+          (nodes.length - 1) % maxNodesPerRow || maxNodesPerRow;
+        endNode.position = {
+          x: ((currentRowNodes - 1) * nodeSpacing) / 2 + 10, // center end node based on number of nodes in the current row
+          y: (row + 1) * rowSpacing + 20, // adjust y position based on row
+        };
+      }
       nodes[endNodeIndex] = endNode;
     }
 
@@ -76,7 +89,10 @@ const useFlowStore = create((set, get) => ({
         {
           id: "end",
           data: { label: "End Node" },
-          position: { x: 15, y: 280 },
+          position: {
+            x: 15,
+            y: 170,
+          },
           type: "output",
         },
       ],
