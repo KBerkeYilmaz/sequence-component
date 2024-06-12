@@ -68,7 +68,7 @@ const useFlowStore = create((set, get) => ({
         const currentRowNodes =
           (nodes.length - 1) % maxNodesPerRow || maxNodesPerRow;
         endNode.position = {
-          x: ((currentRowNodes - 1) * nodeSpacing) / 2 + 10, // center end node based on number of nodes in the current row
+          x: ((currentRowNodes - 1) * nodeSpacing) / 2 + 15, // center end node based on number of nodes in the current row
           y: (row + 1) * rowSpacing + 20, // adjust y position based on row
         };
       }
@@ -84,7 +84,7 @@ const useFlowStore = create((set, get) => ({
           id: "1",
           data: { label, type },
           position: { x: 10, y: 20 },
-          type: "formNode",
+          type: "conditionNode",
         },
         {
           id: "end",

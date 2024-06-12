@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   BaseEdge,
   EdgeLabelRenderer,
@@ -17,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 
 export default function CustomEdge({ id, sourceX, sourceY, targetX, targetY }) {
+
   const { setEdges } = useReactFlow();
   const [edgePath, labelX, labelY] = getSimpleBezierPath({
     sourceX,
@@ -49,6 +51,7 @@ export default function CustomEdge({ id, sourceX, sourceY, targetX, targetY }) {
             <DialogContent className="sm:max-w-[550px]">
               <NewAutomationOptions />
             </DialogContent>
+            <DialogFooter></DialogFooter>
           </Dialog>
         </div>
       </EdgeLabelRenderer>

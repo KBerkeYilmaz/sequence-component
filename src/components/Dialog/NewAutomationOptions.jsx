@@ -8,6 +8,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogClose,
+} from "@/components/ui/dialog"; // Import Dialog components
+
 import { StickyNote, Tags, TextCursorInput } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -39,7 +47,7 @@ export default function NewAutomationOptions() {
     if (!initialNodeSet) {
       setInitialNode(type, label);
     } else {
-      addNode({ data: { label, type }, type: "formNode" });
+      addNode({ data: { label, type }, type: "conditionNode" });
     }
   };
 
@@ -91,7 +99,7 @@ export default function NewAutomationOptions() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button onClick={() => handleAddNode("form", "Form Node")}>
+            <Button onClick={() => handleAddNode("form", "ConditionNode")}>
               Add Event
             </Button>
           </CardFooter>
@@ -126,7 +134,7 @@ export default function NewAutomationOptions() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button onClick={() => handleAddNode("tag", "Tag Node")}>
+            <Button onClick={() => handleAddNode("tag", "ConditionNode")}>
               Add Event
             </Button>
           </CardFooter>
@@ -185,7 +193,7 @@ export default function NewAutomationOptions() {
             )}
           </CardContent>
           <CardFooter>
-            <Button onClick={() => handleAddNode("field", "Field Node")}>
+            <Button onClick={() => handleAddNode("field", "ConditionNode")}>
               Add Event
             </Button>
           </CardFooter>

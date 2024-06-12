@@ -137,11 +137,11 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import useFlowStore from "store/flowStore";
 import CustomEdge from "components/Flow/CustomEdges";
-import { FormNode } from "components/Flow/CustomNodes";
+import { ConditionNode, ActionNode } from "components/Flow/CustomNodes";
 import NewAutomationOptions from "components/Dialog/NewAutomationOptions";
 
 const nodeTypes = {
-  formNode: FormNode,
+  conditionNode: ConditionNode,
 };
 
 const edgeTypes = {
@@ -167,7 +167,7 @@ const FlowComponent = () => {
   if (!showFlow) {
     return (
       <div className="flex h-[90vh] w-full items-center justify-center">
-        <div className="border px-4 py-6 rounded-lg">
+        <div className="rounded-lg border px-4 py-6">
           {" "}
           <NewAutomationOptions />{" "}
         </div>
