@@ -2,7 +2,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Mail } from "lucide-react";
-import useAutomationStore from "@/store/automationStore";
+import useFlowStore from "@/store/flowStore";
 import {
   Drawer,
   DrawerClose,
@@ -19,7 +19,7 @@ const Line = () => (
 );
 
 const AutomationNewElementCircle = ({ isOpen, onOpen, onClose }) => {
-  const addFlow = useAutomationStore((state) => state.addSequence);
+  const addFlow = useFlowStore((state) => state.addSequence);
 
   const handleAddSequence = () => {
     addFlow();
