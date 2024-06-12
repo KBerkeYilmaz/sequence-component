@@ -1,8 +1,12 @@
-import { create } from "zustand";
-import { applyEdgeChanges, applyNodeChanges, addEdge } from "reactflow";
+import { create } from 'zustand';
+import {
+  applyEdgeChanges,
+  applyNodeChanges,
+  addEdge,
+} from 'reactflow';
 
-import initialNodes from "@/components/Flow/initialNodes";
-import initialEdges from "@/components/Flow//initialEdges";
+import initialNodes from 'components/Flow/initialNodes';
+import initialEdges from 'components/Flow/initialEdges';
 
 const useFlowStore = create((set, get) => ({
   nodes: initialNodes,
@@ -19,7 +23,7 @@ const useFlowStore = create((set, get) => ({
   },
   onConnect: (connection) => {
     set({
-      edges: addEdge({ ...connection, type: "custom" }, get().edges),
+      edges: addEdge({ ...connection, type: 'custom' }, get().edges),
     });
   },
   setNodes: (nodes) => {
@@ -29,37 +33,49 @@ const useFlowStore = create((set, get) => ({
     set({ edges });
   },
   addNode: (newNode) => {
-    const nodes = [...get().nodes, newNode];
-    const edges = get().edges;
-    const newEdge = {
-      id: `e${nodes.length - 1}-${nodes.length}`,
-      source: (nodes.length - 1).toString(),
-      target: "2", // always connect to the end node
-      type: "custom",
-    };
+    let nodes = get().nodes;
+    let edges = get().edges;
 
-    // Update node positions and add new edge
-    nodes[nodes.length - 1].position = {
+    if (nodes.length >= 6) return; // Maximum 5 starter nodes + 1 end node
+
+    const newNodeId = (nodes.length).toString();
+    newNode.id = newNodeId;
+
+    newNode.position = {
       x: (nodes.length - 1) * 200, // space out nodes horizontally
-      y: 0,
+      // y: 100 * (nodes.length - 1), // ensure y-difference is at least 100
+      y: 10,
     };
+    nodes = [...nodes, newNode];
 
-    edges.push(newEdge);
+    const newEdge = {
+      id: `e${newNodeId}-end`,
+      source: newNodeId,
+      target: 'end', // always connect to the end node
+      type: 'custom',
+    };
+    edges = [...edges, newEdge];
 
     // Update end node position
-    const endNodeIndex = nodes.findIndex((node) => node.id === "2");
+    const endNodeIndex = nodes.findIndex(node => node.id === 'end');
     if (endNodeIndex !== -1) {
       const endNode = nodes[endNodeIndex];
       endNode.position = {
-        x:
-          nodes.reduce((acc, node) => acc + node.position.x, 0) /
-          (nodes.length - 1),
-        y: 150,
+        x: ((nodes.length - 2) * 200) / 2, // center end node based on number of nodes
+        // y: 150 + 100 * (nodes.length - 2), // adjust y position
+        y: 260,
       };
       nodes[endNodeIndex] = endNode;
     }
 
     set({ nodes, edges });
+  },
+  updateNodeData: (id, data) => {
+    set({
+      nodes: get().nodes.map(node => 
+        node.id === id ? { ...node, data: { ...node.data, ...data } } : node
+      ),
+    });
   },
 }));
 

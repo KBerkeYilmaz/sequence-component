@@ -127,7 +127,7 @@
 //     </div>
 //   );
 // }
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   MiniMap,
@@ -135,8 +135,14 @@ import ReactFlow, {
   Background,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import useFlowStore from '@/store/flowStore';
-import CustomEdge from '@/components/Flow/CustomEdges';
+import useFlowStore from 'store/flowStore';
+import CustomEdge from 'components/Flow/CustomEdges';
+import { FormNode } from 'components/Flow/CustomNodes';
+import NewAutomationOptions from 'components/Dialog/NewAutomationOptions';
+
+const nodeTypes = {
+  formNode: FormNode,
+};
 
 const edgeTypes = {
   custom: CustomEdge,
@@ -160,16 +166,16 @@ const FlowComponent = () => {
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
           edgeTypes={edgeTypes}
+          nodeTypes={nodeTypes}
+          nodesDraggable={false}
         >
           <Controls />
           <MiniMap nodeStrokeWidth={3} zoomable pannable />
           <Background variant="dots" gap={12} size={1} />
         </ReactFlow>
         <button onClick={() => addNode({
-          id: `${nodes.length + 1}`,
-          position: { x: 250 * (nodes.length), y: 0 },
-          data: { label: `Node ${nodes.length + 1}` },
-          type: 'default',
+          data: { label: `Node ${nodes.length}` },
+          type: 'formNode',
         })}>Add Node</button>
       </div>
     </ReactFlowProvider>

@@ -21,14 +21,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import useFlowStore from "store/flowStore";
 
 export default function NewAutomationOptions() {
   const conditionRef = useRef("");
   const [showTarget, setShowTarget] = useState(false);
+  const nodes = useFlowStore((state) => state.nodes);
+  const addNode = useFlowStore((state) => state.addNode);
 
   const handleConditionChange = (value) => {
     conditionRef.current = value;
     setShowTarget(value === "changes-to");
+  };
+
+  const handleAddNode = (type, label) => {
+    addNode({
+      data: { label, type },
+      type: "formNode",
+    });
   };
 
   return (
@@ -79,7 +89,9 @@ export default function NewAutomationOptions() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button>Add Event</Button>
+            <Button onClick={() => handleAddNode("form", "Form Node")}>
+              Add Event
+            </Button>
           </CardFooter>
         </Card>
       </TabsContent>
@@ -112,7 +124,9 @@ export default function NewAutomationOptions() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button>Add Event</Button>
+            <Button onClick={() => handleAddNode("tag", "Tag Node")}>
+              Add Event
+            </Button>
           </CardFooter>
         </Card>
       </TabsContent>
@@ -169,7 +183,9 @@ export default function NewAutomationOptions() {
             )}
           </CardContent>
           <CardFooter>
-            <Button>Add Event</Button>
+            <Button onClick={() => handleAddNode("field", "Field Node")}>
+              Add Event
+            </Button>
           </CardFooter>
         </Card>
       </TabsContent>
