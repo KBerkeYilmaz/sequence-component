@@ -154,11 +154,10 @@ const FlowComponent = () => {
   const onNodesChange = useFlowStore((state) => state.onNodesChange);
   const onEdgesChange = useFlowStore((state) => state.onEdgesChange);
   const onConnect = useFlowStore((state) => state.onConnect);
-  const addNode = useFlowStore((state) => state.addNode);
 
   return (
     <ReactFlowProvider>
-      <div style={{ width: '100vw', height: '85vh', position: 'absolute' }}>
+      <div style={{ width: '100vw', height: '90vh', position: 'absolute', }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -171,12 +170,7 @@ const FlowComponent = () => {
         >
           <Controls />
           <MiniMap nodeStrokeWidth={3} zoomable pannable />
-          <Background variant="dots" gap={12} size={1} />
         </ReactFlow>
-        <button onClick={() => addNode({
-          data: { label: `Node ${nodes.length}` },
-          type: 'formNode',
-        })}>Add Node</button>
       </div>
     </ReactFlowProvider>
   );
