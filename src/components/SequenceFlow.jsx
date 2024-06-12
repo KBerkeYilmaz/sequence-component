@@ -127,18 +127,18 @@
 //     </div>
 //   );
 // }
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import ReactFlow, {
   ReactFlowProvider,
   MiniMap,
   Controls,
   Background,
-} from 'reactflow';
-import 'reactflow/dist/style.css';
-import useFlowStore from 'store/flowStore';
-import CustomEdge from 'components/Flow/CustomEdges';
-import { FormNode } from 'components/Flow/CustomNodes';
-import NewAutomationOptions from 'components/Dialog/NewAutomationOptions';
+} from "reactflow";
+import "reactflow/dist/style.css";
+import useFlowStore from "store/flowStore";
+import CustomEdge from "components/Flow/CustomEdges";
+import { FormNode } from "components/Flow/CustomNodes";
+import NewAutomationOptions from "components/Dialog/NewAutomationOptions";
 
 const nodeTypes = {
   formNode: FormNode,
@@ -154,10 +154,30 @@ const FlowComponent = () => {
   const onNodesChange = useFlowStore((state) => state.onNodesChange);
   const onEdgesChange = useFlowStore((state) => state.onEdgesChange);
   const onConnect = useFlowStore((state) => state.onConnect);
+  const initialNodeSet = useFlowStore((state) => state.initialNodeSet);
+  const addNode = useFlowStore((state) => state.addNode);
+  const [showFlow, setShowFlow] = useState(false);
+
+  useEffect(() => {
+    if (initialNodeSet) {
+      setShowFlow(true);
+    }
+  }, [initialNodeSet]);
+
+  if (!showFlow) {
+    return (
+      <div className="flex h-[90vh] w-full items-center justify-center">
+        <div className="border px-4 py-6 rounded-lg">
+          {" "}
+          <NewAutomationOptions />{" "}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <ReactFlowProvider>
-      <div style={{ width: '100vw', height: '90vh', position: 'absolute', }}>
+      <div style={{ width: "100vw", height: "85vh", position: "absolute" }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
