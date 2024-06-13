@@ -1,7 +1,6 @@
 import SequenceFlow from "components/SequenceFlow";
-import AutomationNewElementCircle from "components/AutomationNewElementCircle";
 
-const FlotTest = () => {
+const VisualAutomation = () => {
   return (
       <div className="relative">
         <SequenceFlow />
@@ -9,4 +8,4 @@ const FlotTest = () => {
   );
 };
 
-export default FlotTest;
+export default VisualAutomation;

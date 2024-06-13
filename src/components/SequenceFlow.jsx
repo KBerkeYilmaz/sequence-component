@@ -137,6 +137,7 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import useFlowStore from "store/flowStore";
 import CustomEdge from "components/Flow/CustomEdges";
+import { useShallow } from "zustand/react/shallow";
 import {
   ConditionNode,
   ConnectorNode,
@@ -158,12 +159,18 @@ const edgeTypes = {
   custom: CustomEdge,
 };
 
+const selector = (state) => ({
+  nodes: state.nodes,
+  edges: state.edges,
+  onNodesChange: state.onNodesChange,
+  onEdgesChange: state.onEdgesChange,
+  onConnect: state.onConnect,
+});
+
 const FlowComponent = () => {
-  const nodes = useFlowStore((state) => state.nodes);
-  const edges = useFlowStore((state) => state.edges);
-  const onNodesChange = useFlowStore((state) => state.onNodesChange);
-  const onEdgesChange = useFlowStore((state) => state.onEdgesChange);
-  const onConnect = useFlowStore((state) => state.onConnect);
+  const { nodes, edges, onNodesChange, onEdgesChange, onConnect } =
+    useFlowStore(useShallow(selector));
+
   const initialNodeSet = useFlowStore((state) => state.initialNodeSet);
   const [showFlow, setShowFlow] = useState(false);
   const { fitView } = useReactFlow();
@@ -172,7 +179,6 @@ const FlowComponent = () => {
     if (initialNodeSet) {
       setShowFlow(true);
     }
-
     if (showFlow) {
       fitView();
     }
@@ -204,8 +210,6 @@ const FlowComponent = () => {
           nodesDraggable={false}
           fitView
           proOptions={proOptions}
-
-
         >
           <Controls />
           <MiniMap nodeStrokeWidth={3} zoomable pannable />

@@ -6,7 +6,7 @@ import { MailPlus } from "lucide-react";
 import { useSequenceStore } from "@/store/sequenceStore";
 import SequenceMailSettings from "components/SequenceMailSettings";
 
-export default function NewHome() {
+export default function Content() {
   const [activeSheet, setActiveSheet] = React.useState(null);
 
   const { addSequence, sequences, removeSequence } = useSequenceStore();

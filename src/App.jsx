@@ -1,23 +1,20 @@
 import React from "react";
 import { ReactFlowProvider } from "reactflow";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Home from "./pages/home";
-import Launch from "./pages/launch";
-import LeadList from "./pages/lead-list";
+import SequenceSettings from "./pages/sequence-settings";
 import Layout from "./layout/Layout";
-import NewHome from "./pages/new_home";
-import FlowTest from "./pages/flow_test";
+import Content from "./pages/content";
+import VisualAutomation from "./pages/automation";
 
 const App = () => (
   <ReactFlowProvider>
     <Router>
       <Layout>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/lead-list" element={<LeadList />} />
-          <Route path="/launch" element={<Launch />} />
-          <Route path="/new_home" element={<NewHome />} />
-          <Route path="/flow_test" element={<FlowTest />} />
+          <Route path="/" element={<Content />} />
+          <Route path="/sequence-settings" element={<SequenceSettings />} />
+          <Route path="/content" element={<Content />} />
+          <Route path="/automation" element={<VisualAutomation />} />
         </Routes>
       </Layout>
     </Router>
