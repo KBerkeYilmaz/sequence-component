@@ -73,7 +73,7 @@ const useFlowStore = create((set, get) => ({
         };
       } else {
         const currentRowNodes =
-          (nodes.length - 1) % maxNodesPerRow || maxNodesPerRow;
+          (nodes.length - 2) % maxNodesPerRow || maxNodesPerRow;
         endNode.position = {
           x: ((currentRowNodes - 1) * nodeSpacing) / 2 + 10, // center end node based on number of nodes in the current row
           y: (row + 1) * rowSpacing + 20, // adjust y position based on row
@@ -89,6 +89,7 @@ const useFlowStore = create((set, get) => ({
 
     set({ nodes, edges });
   },
+
   setInitialNode: (type, label) => {
     set({
       nodes: [
