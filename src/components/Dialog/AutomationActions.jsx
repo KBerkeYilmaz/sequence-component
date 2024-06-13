@@ -8,10 +8,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { StickyNote, Tags, TextCursorInput } from "lucide-react";
+import { Target, Zap, Signpost } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Calendar } from "@/components/ui/calendar";
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
 import {
   Select,
   SelectContent,
@@ -23,12 +32,13 @@ import {
 } from "@/components/ui/select";
 import useFlowStore from "store/flowStore";
 
-export default function NewAutomationOptions() {
+export default function AutomationActions() {
   const conditionRef = useRef("");
   const [showTarget, setShowTarget] = useState(false);
   const setInitialNode = useFlowStore((state) => state.setInitialNode);
-  const addNode = useFlowStore((state) => state.addNode);
+  const addNodeY = useFlowStore((state) => state.addNodeY);
   const initialNodeSet = useFlowStore((state) => state.initialNodeSet);
+  const [date, setDate] = React.useState(new Date());
 
   const handleConditionChange = (value) => {
     conditionRef.current = value;
@@ -39,154 +49,273 @@ export default function NewAutomationOptions() {
     if (!initialNodeSet) {
       setInitialNode(type, label);
     } else {
-      addNode({ data: { label, type }, type: "formNode" });
+      addNodeY({ data: { label, type }, type: "actionNode" });
     }
   };
 
   return (
-    <Tabs defaultValue="form" className="w-[500px]">
+    <Tabs defaultValue="event" className="w-[500px]">
       <TabsList className="grid w-full grid-cols-3">
-        <TabsTrigger value="form">
-          <StickyNote className="mr-2" size={14} />
-          Joins a form
+        <TabsTrigger value="event">
+          <Target className="mr-2" size={14} />
+          Event
         </TabsTrigger>
-        <TabsTrigger value="tag">
-          <Tags className="mr-2" size={14} />
-          Is added to a tag
+        <TabsTrigger value="action">
+          <Zap className="mr-2" size={14} />
+          Action
         </TabsTrigger>
-        <TabsTrigger value="field">
-          <TextCursorInput className="mr-2" size={14} />
-          Custom field
+        <TabsTrigger value="condition">
+          <Signpost className="mr-2" size={14} />
+          Condition
         </TabsTrigger>
       </TabsList>
-      <TabsContent value="form">
+
+      <TabsContent value="event">
         <Card>
           <CardHeader>
             <CardTitle className="text-sm tracking-wider text-slate-600">
-              When a subscriber is added to a form
+              Jump to here when a ...
             </CardTitle>
             <CardDescription>
-              Use this panel to include all subscribers who join a specific
-              form.
+              Use this point as a placeholder for specific events{" "}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <div className="space-y-1">
-              <Label htmlFor="available-forms">Forms</Label>
-              <Select id="available-forms">
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a form" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="all-forms">All Forms</SelectItem>
-                    <SelectSeparator />
-                    <SelectItem value="form1">Form 1</SelectItem>
-                    <SelectItem value="form2">Form 2</SelectItem>
-                    <SelectItem value="form3">Form 3</SelectItem>
-                    <SelectItem value="form4">Form 4</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
+            <Accordion type="single" collapsible className="w-full px-1">
+              <AccordionItem value="action-tags">
+                <AccordionTrigger>Tags</AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-1 p-1">
+                    <Select id="available-tags">
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Search your tags" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="tag1">Tag 1</SelectItem>
+                          <SelectItem value="tag2">Tag 2</SelectItem>
+                          <SelectItem value="tag3">Tag 3</SelectItem>
+                          <SelectItem value="tag4">Tag 4</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="action-removed-tags">
+                <AccordionTrigger>Tag is removed</AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-1 p-1">
+                    <Select id="available-tags">
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Search your tags" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="tag1">Tag 1</SelectItem>
+                          <SelectItem value="tag2">Tag 2</SelectItem>
+                          <SelectItem value="tag3">Tag 3</SelectItem>
+                          <SelectItem value="tag4">Tag 4</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="action-date">
+                <AccordionTrigger>Date Occurs</AccordionTrigger>
+                <AccordionContent>
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={setDate}
+                    className="flex justify-center rounded-md border"
+                  />
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="action-custom-field">
+                <AccordionTrigger>Custom Field</AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-1 p-1">
+                    <Label htmlFor="custom-field">When</Label>
+                    <Select id="custom-field">
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Search saved fields" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="field1">Field 1</SelectItem>
+                          <SelectItem value="field2">Field 2</SelectItem>
+                          <SelectItem value="field3">Field 3</SelectItem>
+                          <SelectItem value="field4">Field 4</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-1 p-1">
+                    <Label htmlFor="custom-field-condition">Condition</Label>
+                    <Select
+                      id="custom-field-condition"
+                      onValueChange={handleConditionChange}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a condition" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="changes">Changes</SelectItem>
+                          <SelectItem value="changes-to">Changes to</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  {showTarget && (
+                    <div className="space-y-1 p-1">
+                      <Label htmlFor="custom-field-target">
+                        Type target value
+                      </Label>
+                      <Input id="custom-field-target"></Input>
+                    </div>
+                  )}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </CardContent>
           <CardFooter>
             <Button onClick={() => handleAddNode("form", "Form Node")}>
-              Add Event
+              Add Action
             </Button>
           </CardFooter>
         </Card>
       </TabsContent>
-      <TabsContent value="tag">
+
+      <TabsContent value="action">
         <Card>
           <CardHeader>
             <CardTitle className="text-sm tracking-wider text-slate-600">
-              When a subscriber is marked with a specific tag.
+              Add the subscriber to...
             </CardTitle>
             <CardDescription>
-              Select your tagged subscribers from the lists below.
+              Add your subscribers to selected lists below.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <div className="space-y-1">
-              <Label htmlFor="available-tags">Tags</Label>
-              <Select id="available-tags">
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Search your tags" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="tag1">Tag 1</SelectItem>
-                    <SelectItem value="tag2">Tag 2</SelectItem>
-                    <SelectItem value="tag3">Tag 3</SelectItem>
-                    <SelectItem value="tag4">Tag 4</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button onClick={() => handleAddNode("tag", "Tag Node")}>
-              Add Event
-            </Button>
-          </CardFooter>
-        </Card>
-      </TabsContent>
-      <TabsContent value="field">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm tracking-wider text-slate-600">
-              When there are changes to a custom field.
-            </CardTitle>
-            <CardDescription>
-              Add an event if there are any or specific changes to a custom
-              field.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="space-y-1">
-              <Label htmlFor="custom-field">When</Label>
-              <Select id="custom-field">
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Search saved fields" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="field1">Field 1</SelectItem>
-                    <SelectItem value="field2">Field 2</SelectItem>
-                    <SelectItem value="field3">Field 3</SelectItem>
-                    <SelectItem value="field4">Field 4</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="custom-field-condition">Condition</Label>
-              <Select
-                id="custom-field-condition"
-                onValueChange={handleConditionChange}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a condition" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="changes">Changes</SelectItem>
-                    <SelectItem value="changes-to">Changes to</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-            {showTarget && (
-              <div className="space-y-1">
-                <Label htmlFor="custom-field-target">Type target value</Label>
-                <Input id="custom-field-target"></Input>
-              </div>
-            )}
+            <Accordion type="single" collapsible className="w-full px-1">
+              <AccordionItem value="action-tags">
+                <AccordionTrigger>Tags</AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-1 p-1">
+                    <Select id="available-tags">
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Search your tags" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="tag1">Tag 1</SelectItem>
+                          <SelectItem value="tag2">Tag 2</SelectItem>
+                          <SelectItem value="tag3">Tag 3</SelectItem>
+                          <SelectItem value="tag4">Tag 4</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="action-removed-tags">
+                <AccordionTrigger>Tag is removed</AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-1 p-1">
+                    <Select id="available-tags">
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Search your tags" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="tag1">Tag 1</SelectItem>
+                          <SelectItem value="tag2">Tag 2</SelectItem>
+                          <SelectItem value="tag3">Tag 3</SelectItem>
+                          <SelectItem value="tag4">Tag 4</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="action-date">
+                <AccordionTrigger>Delay Duration</AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-1 p-1">
+                    <Label htmlFor="date">Delay the next step for</Label>
+                    <div className="flex gap-4">
+                      <Input placeholder="" type="number" />
+                      <Select id="custom-field">
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Delay type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectItem value="minute">Minutes</SelectItem>
+                            <SelectItem value="hour">Hours</SelectItem>
+                            <SelectItem value="day">Days</SelectItem>
+                            <SelectItem value="week">Weeks</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>{" "}
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="action-custom-field">
+                <AccordionTrigger>Custom Field</AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-1 p-1">
+                    <Label htmlFor="custom-field">When</Label>
+                    <Select id="custom-field">
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Search saved fields" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="field1">Field 1</SelectItem>
+                          <SelectItem value="field2">Field 2</SelectItem>
+                          <SelectItem value="field3">Field 3</SelectItem>
+                          <SelectItem value="field4">Field 4</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-1 p-1">
+                    <Label htmlFor="custom-field-condition">Condition</Label>
+                    <Select
+                      id="custom-field-condition"
+                      onValueChange={handleConditionChange}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a condition" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="changes">Changes</SelectItem>
+                          <SelectItem value="changes-to">Changes to</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  {showTarget && (
+                    <div className="space-y-1 p-1">
+                      <Label htmlFor="custom-field-target">
+                        Type target value
+                      </Label>
+                      <Input id="custom-field-target"></Input>
+                    </div>
+                  )}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </CardContent>
           <CardFooter>
             <Button onClick={() => handleAddNode("field", "Field Node")}>
-              Add Event
+              Add Action
             </Button>
           </CardFooter>
         </Card>

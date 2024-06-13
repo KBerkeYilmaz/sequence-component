@@ -132,16 +132,26 @@ import ReactFlow, {
   ReactFlowProvider,
   MiniMap,
   Controls,
-  Background,
+  useReactFlow,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import useFlowStore from "store/flowStore";
 import CustomEdge from "components/Flow/CustomEdges";
-import { ConditionNode, ActionNode } from "components/Flow/CustomNodes";
+import {
+  ConditionNode,
+  ConnectorNode,
+  ActionNode,
+  InitialNode,
+  EndNode,
+} from "components/Flow/CustomNodes";
 import NewAutomationOptions from "components/Dialog/NewAutomationOptions";
 
 const nodeTypes = {
   conditionNode: ConditionNode,
+  initialNode: InitialNode,
+  connectorNode: ConnectorNode,
+  actionNode: ActionNode,
+  endNode: EndNode,
 };
 
 const edgeTypes = {
@@ -155,14 +165,18 @@ const FlowComponent = () => {
   const onEdgesChange = useFlowStore((state) => state.onEdgesChange);
   const onConnect = useFlowStore((state) => state.onConnect);
   const initialNodeSet = useFlowStore((state) => state.initialNodeSet);
-  const addNode = useFlowStore((state) => state.addNode);
   const [showFlow, setShowFlow] = useState(false);
+  const { fitView } = useReactFlow();
 
   useEffect(() => {
     if (initialNodeSet) {
       setShowFlow(true);
     }
-  }, [initialNodeSet]);
+
+    if (showFlow) {
+      fitView();
+    }
+  }, [initialNodeSet, nodes, edges, fitView, showFlow]);
 
   if (!showFlow) {
     return (
@@ -174,6 +188,7 @@ const FlowComponent = () => {
       </div>
     );
   }
+  const proOptions = { hideAttribution: true };
 
   return (
     <ReactFlowProvider>
@@ -187,6 +202,10 @@ const FlowComponent = () => {
           edgeTypes={edgeTypes}
           nodeTypes={nodeTypes}
           nodesDraggable={false}
+          fitView
+          proOptions={proOptions}
+
+
         >
           <Controls />
           <MiniMap nodeStrokeWidth={3} zoomable pannable />
