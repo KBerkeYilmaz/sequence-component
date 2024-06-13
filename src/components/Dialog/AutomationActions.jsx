@@ -46,11 +46,7 @@ export default function AutomationActions() {
   };
 
   const handleAddNode = (type, label) => {
-    if (!initialNodeSet) {
-      setInitialNode(type, label);
-    } else {
-      addNodeY({ data: { label, type }, type: "actionNode" });
-    }
+    addNodeY({ data: { label, type }, type: "actionNode" });
   };
 
   return (
