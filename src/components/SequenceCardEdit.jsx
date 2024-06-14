@@ -1,28 +1,9 @@
 import React, { useMemo } from "react";
 import { useSequenceStore } from "@/store/sequenceStore";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-import { Copy, Trash, Ungroup } from "lucide-react";
-import { Clock, Mail, Ellipsis, Pencil } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
-
-const Line = () => (
-  <div className="absolute -top-10 z-10 h-10 w-[1px] translate-x-[9.9rem] bg-gray-400"></div>
-);
+import { Clock, Mail } from "lucide-react";
 
 const SequenceCardEdit = ({ sequenceIndex, onClick }) => {
-  const {
-    sequences,
-    updateSequenceDelay,
-    removeSequence,
-    duplicateSequence,
-    delay,
-  } = useSequenceStore();
+  const { sequences, updateSequenceDelay } = useSequenceStore();
   const sequence = sequences.find((seq) => seq.id === sequenceIndex);
 
   const handleReset = (value = 0) => {
@@ -100,57 +81,9 @@ const SequenceCardEdit = ({ sequenceIndex, onClick }) => {
             <span className={`text-xs ${textColor}`}>{getStatusText()}</span>
           </div>
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            variant="ghost"
-            className="mr-4 flex items-center justify-center rounded-lg p-2 hover:bg-blue-100 hover:text-blue-500"
-            onClick={handleDropdownMenuClick}
-          >
-            <Ellipsis size={18} className="rounded-lg" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-80 bg-white ">
-            <DropdownMenuItem
-              className="py-2"
-              onClick={(e) => {
-                e.stopPropagation();
-                duplicateSequence(sequenceIndex);
-              }}
-            >
-              <Copy size={18} className="mr-4 rotate-90" />
-              <span>Duplicate</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="py-2">
-              <Ungroup size={18} className="mr-4" />
-              <span>A/B Test this step</span>
-            </DropdownMenuItem>
-            {delay === 0 && (
-              <DropdownMenuItem
-                className="py-2"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleReset(1);
-                }}
-              >
-                <Clock size={18} className="mr-4" />
-                <span>Add a waiting time for this step</span>
-              </DropdownMenuItem>
-            )}
-            <Separator />
-            <DropdownMenuItem
-              className="py-2 text-red-600"
-              onClick={(e) => {
-                e.stopPropagation();
-                removeSequence(sequenceIndex);
-              }}
-            >
-              <Trash size={18} className="mr-4" />
-              <span>Delete This step</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
     </div>
   );
 };
 
-export default React.memo(SequenceCardEdit);;
+export default React.memo(SequenceCardEdit);

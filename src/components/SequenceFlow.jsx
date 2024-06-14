@@ -86,16 +86,6 @@
 //   const [nodes, setNodes] = useNodesState(initialNodes);
 //   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-//   const nodeTypes = useMemo(
-//     () => ({
-//       formNode: FormNode,
-//       tagNode: TagNode,
-//       endNode: EndNode,
-//       customFieldNode: CustomFieldNode,
-//     }),
-//     [],
-//   );
-
 //   const onNodesChange = useCallback(
 //     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
 //     [setNodes],
@@ -127,7 +117,7 @@
 //     </div>
 //   );
 // }
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import ReactFlow, {
   ReactFlowProvider,
   MiniMap,
@@ -147,14 +137,6 @@ import {
 } from "components/Flow/CustomNodes";
 import NewAutomationOptions from "components/Dialog/NewAutomationOptions";
 
-const nodeTypes = {
-  conditionNode: ConditionNode,
-  initialNode: InitialNode,
-  connectorNode: ConnectorNode,
-  actionNode: ActionNode,
-  endNode: EndNode,
-};
-
 const edgeTypes = {
   custom: CustomEdge,
 };
@@ -173,16 +155,23 @@ const FlowComponent = () => {
 
   const initialNodeSet = useFlowStore((state) => state.initialNodeSet);
   const [showFlow, setShowFlow] = useState(false);
-  const { fitView } = useReactFlow();
+
+  const nodeTypes = useMemo(
+    () => ({
+      conditionNode: ConditionNode,
+      initialNode: InitialNode,
+      connectorNode: ConnectorNode,
+      actionNode: ActionNode,
+      endNode: EndNode,
+    }),
+    [],
+  );
 
   useEffect(() => {
     if (initialNodeSet) {
       setShowFlow(true);
     }
-    if (showFlow) {
-      fitView();
-    }
-  }, [initialNodeSet, nodes, edges, fitView, showFlow]);
+  }, [initialNodeSet, nodes, edges, showFlow]);
 
   if (!showFlow) {
     return (
@@ -198,7 +187,7 @@ const FlowComponent = () => {
 
   return (
     <ReactFlowProvider>
-      <div style={{ width: "100vw", height: "85vh", position: "absolute" }}>
+      <div style={{ width: "100vw", height: "90vh", position: "absolute" }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}

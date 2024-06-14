@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from "react";
-import QuillEditor from "./QuilEditor";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DAYS } from "@/data/days";
@@ -162,7 +161,7 @@ const SequenceMailSettings = ({ sequenceId, onDelete }) => {
           </DropdownMenu>
         </div>
         <div>
-          <Dialog>
+          {/* <Dialog>
             <DialogTrigger asChild>
               <Button variant={"ghost"}>
                 <Filter size={20} className="text-blue-500" />
@@ -195,7 +194,7 @@ const SequenceMailSettings = ({ sequenceId, onDelete }) => {
                 </DialogClose>
               </DialogFooter>
             </DialogContent>
-          </Dialog>
+          </Dialog> */}
 
           <Dialog>
             <DialogTrigger asChild>

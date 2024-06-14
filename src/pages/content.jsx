@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import QuillEditor from "components/QuilEditor";
 import SequenceCardEdit from "components/SequenceCardEdit";
 import { Button } from "@/components/ui/button";
 import { MailPlus } from "lucide-react";

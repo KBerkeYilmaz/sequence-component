@@ -202,7 +202,7 @@ export function InitialNode({ id, data }) {
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Edit Node</DialogTitle>
+              <DialogTitle>Delete</DialogTitle>
             </DialogHeader>
             <DialogDescription>
               <Input
