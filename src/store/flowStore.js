@@ -89,8 +89,10 @@ const useFlowStore = create((set, get) => ({
     }
 
     // Count condition nodes
-    const conditionNodes = nodes.filter((node) => node.type === "conditionNode");
-    
+    const conditionNodes = nodes.filter(
+      (node) => node.type === "conditionNode",
+    );
+
     if (conditionNodes.length === 4) {
       set({ nodes, edges, actionNodeTriggered: true });
     } else {
@@ -147,18 +149,46 @@ const useFlowStore = create((set, get) => ({
         type: "default",
       });
 
-      // Ensure all condition nodes target the node with the highest ID
-      const conditionNodes = nodes.filter((node) => node.type === "conditionNode");
-      const initialNode = nodes.find((node) => node.type === "initialNode");
-      if (conditionNodes.length > 0 || initialNode) {
-        const targetNodeId = Math.max(...conditionNodes.map((node) => parseInt(node.id))) + 1;
-        edges = edges.map((edge) => {
-          const sourceNode = nodes.find((node) => node.id === edge.source);
-          if (sourceNode && (sourceNode.type === "conditionNode" || sourceNode.type === "initialNode")) {
-            return { ...edge, target: targetNodeId.toString() };
-          }
-          return edge;
-        });
+      // Handle the specific case when there is only the initial node, connector node, and end node
+      if (nodes.length === 3) {
+        const initialNode = nodes.find((node) => node.type === "initialNode");
+        if (initialNode) {
+          edges = edges.map((edge) => {
+            if (edge.source === initialNode.id) {
+              return { ...edge, target: newNodeId };
+            }
+            return edge;
+          });
+
+          // Create an edge from the initial node to the first action node
+          edges.push({
+            id: `e${initialNode.id}-${newNodeId}`,
+            source: initialNode.id,
+            target: newNodeId,
+            type: "default",
+          });
+        }
+      } else {
+        // Ensure all condition nodes target the first action node if it exists
+        const conditionNodes = nodes.filter(
+          (node) => node.type === "conditionNode",
+        );
+        const firstActionNodeId = nodes.find(
+          (node) => node.type === "actionNode",
+        )?.id;
+        if (conditionNodes.length > 0 && firstActionNodeId) {
+          edges = edges.map((edge) => {
+            const sourceNode = nodes.find((node) => node.id === edge.source);
+            if (
+              sourceNode &&
+              (sourceNode.type === "conditionNode" ||
+                sourceNode.type === "initialNode")
+            ) {
+              return { ...edge, target: firstActionNodeId };
+            }
+            return edge;
+          });
+        }
       }
 
       // Ensure the connector node always targets the end node

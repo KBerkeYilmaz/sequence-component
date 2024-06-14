@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   BaseEdge,
   EdgeLabelRenderer,
@@ -10,16 +10,12 @@ import NewAutomationOptions from "components/Dialog/NewAutomationOptions";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
 export default function CustomEdge({ id, sourceX, sourceY, targetX, targetY }) {
 
-  const { setEdges } = useReactFlow();
   const [edgePath, labelX, labelY] = getSimpleBezierPath({
     sourceX,
     sourceY,
@@ -59,7 +55,6 @@ export default function CustomEdge({ id, sourceX, sourceY, targetX, targetY }) {
   );
 }
 export function StraightEdge({ id, sourceX, sourceY, targetX, targetY }) {
-  const { setEdges } = useReactFlow();
   const [edgePath, labelX, labelY] = getStraightPath({
     sourceX,
     sourceY,

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import SequenceCardEdit from "components/SequenceCardEdit";
+import SequenceCard from "components/SequenceCard";
 import { Button } from "@/components/ui/button";
 import { MailPlus } from "lucide-react";
 import { useSequenceStore } from "@/store/sequenceStore";
@@ -48,7 +48,7 @@ export default function Content() {
           style={{ scrollbarColor: "transparent transparent" }}
         >
           {sequences.map((sequence) => (
-            <SequenceCardEdit
+            <SequenceCard
               key={`sequence-card-${sequence.id}`}
               sequenceIndex={sequence.id}
               onClick={() => handleSheetToggle(sequence.id)}

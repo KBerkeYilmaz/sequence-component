@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { Handle, Position } from "reactflow";
 import { Badge } from "components/ui/badge";
-import { StickyNote, Tags, TextCursorInput, BellRing,Activity } from "lucide-react";
+import {
+  StickyNote,
+  Tags,
+  TextCursorInput,
+  BellRing,
+  Activity,
+} from "lucide-react";
 import {
   Dialog,
   DialogTrigger,
@@ -43,7 +49,7 @@ export function InitialNode({ id, data }) {
 
   return (
     <>
-      <div className="relative h-20 w-40 rounded-md border border-foreground bg-[#ff0072] p-4 shadow-lg">
+      <div className="relative h-20 w-40 rounded-md border border-foreground bg-[#ff0000] p-4 shadow-lg">
         <Badge className="absolute top-0 w-8 -translate-y-4 translate-x-12">
           {conditionBadgeIcons[data.type]}
         </Badge>
@@ -64,7 +70,11 @@ export function InitialNode({ id, data }) {
           </div>
         )}
         <h2 className="h-1/4 text-center text-xs font-semibold">
-          {data.label}
+          {data.type === "formNode"
+            ? "Form"
+            : data.type === "tagNode"
+              ? "Tag"
+              : "Field"}
         </h2>
         <div className="absolute bottom-0 left-0 flex h-1/2 w-full flex-col items-center justify-center rounded-b-md bg-slate-100 py-4">
           <h3 className="text-center text-xs">Completed</h3>
@@ -111,7 +121,11 @@ export function ConditionNode({ id, data }) {
           {conditionBadgeIcons[data.type]}
         </Badge>
         <h2 className="h-1/4 text-center text-xs font-semibold">
-          {data.label}
+          {data.type === "formNode"
+            ? "Form"
+            : data.type === "tagNode"
+              ? "Tag"
+              : "Field"}
         </h2>
         <div className="absolute bottom-0 left-0 flex h-1/2 w-full flex-col items-center justify-center rounded-b-md bg-slate-100 py-4">
           <h3 className="text-center text-xs">Completed</h3>
@@ -159,7 +173,7 @@ export function ActionNode({ id, data }) {
           {actionBadgeIcons[data.type]}
         </Badge>
         <h2 className="h-1/4 text-center text-xs font-semibold">
-          {data.label}
+          {data.type === "action" ? "Action" : "Event"}
         </h2>
         <div className="absolute bottom-0 left-0 flex h-1/2 w-full flex-col items-center justify-center rounded-b-md bg-slate-100 py-4">
           <h3 className="text-center text-xs">Completed</h3>

@@ -19,7 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useSequenceStore } from "@/store/sequenceStore";
-import { Filter, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 import {
   Select,
   SelectContent,

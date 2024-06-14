@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { useSequenceStore } from "@/store/sequenceStore";
 import { Clock, Mail } from "lucide-react";
 
-const SequenceCardEdit = ({ sequenceIndex, onClick }) => {
+const SequenceCard = ({ sequenceIndex, onClick }) => {
   const { sequences, updateSequenceDelay } = useSequenceStore();
   const sequence = sequences.find((seq) => seq.id === sequenceIndex);
 
@@ -86,4 +86,4 @@ const SequenceCardEdit = ({ sequenceIndex, onClick }) => {
   );
 };
 
-export default React.memo(SequenceCardEdit);
+export default React.memo(SequenceCard);
