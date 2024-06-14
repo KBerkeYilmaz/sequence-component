@@ -8,14 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogClose,
-} from "@/components/ui/dialog"; // Import Dialog components
-
 import { StickyNote, Tags, TextCursorInput } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -99,7 +91,7 @@ export default function NewAutomationOptions() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button onClick={() => handleAddNode("form", "ConditionNode")}>
+            <Button onClick={() => handleAddNode("formNode", "Form Node")}>
               Add Event
             </Button>
           </CardFooter>
@@ -134,7 +126,7 @@ export default function NewAutomationOptions() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button onClick={() => handleAddNode("tag", "ConditionNode")}>
+            <Button onClick={() => handleAddNode("tagNode", "Tag Node")}>
               Add Event
             </Button>
           </CardFooter>
@@ -193,7 +185,7 @@ export default function NewAutomationOptions() {
             )}
           </CardContent>
           <CardFooter>
-            <Button onClick={() => handleAddNode("field", "ConditionNode")}>
+            <Button onClick={() => handleAddNode("fieldNode", "Field Node")}>
               Add Event
             </Button>
           </CardFooter>

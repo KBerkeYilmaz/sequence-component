@@ -8,19 +8,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Target, Zap, Signpost } from "lucide-react";
+import { Target, Zap } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar } from "@/components/ui/calendar";
-
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-
 import {
   Select,
   SelectContent,
@@ -35,9 +33,7 @@ import useFlowStore from "store/flowStore";
 export default function AutomationActions() {
   const conditionRef = useRef("");
   const [showTarget, setShowTarget] = useState(false);
-  const setInitialNode = useFlowStore((state) => state.setInitialNode);
   const addNodeY = useFlowStore((state) => state.addNodeY);
-  const initialNodeSet = useFlowStore((state) => state.initialNodeSet);
   const [date, setDate] = React.useState(new Date());
 
   const handleConditionChange = (value) => {
@@ -51,7 +47,7 @@ export default function AutomationActions() {
 
   return (
     <Tabs defaultValue="event" className="w-[500px]">
-      <TabsList className="grid w-full grid-cols-3">
+      <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="event">
           <Target className="mr-2" size={14} />
           Event
@@ -59,10 +55,6 @@ export default function AutomationActions() {
         <TabsTrigger value="action">
           <Zap className="mr-2" size={14} />
           Action
-        </TabsTrigger>
-        <TabsTrigger value="condition">
-          <Signpost className="mr-2" size={14} />
-          Condition
         </TabsTrigger>
       </TabsList>
 
@@ -178,8 +170,8 @@ export default function AutomationActions() {
             </Accordion>
           </CardContent>
           <CardFooter>
-            <Button onClick={() => handleAddNode("form", "Form Node")}>
-              Add Action
+            <Button onClick={() => handleAddNode("event", "Event Node")}>
+              Add Event
             </Button>
           </CardFooter>
         </Card>
@@ -310,7 +302,7 @@ export default function AutomationActions() {
             </Accordion>
           </CardContent>
           <CardFooter>
-            <Button onClick={() => handleAddNode("field", "Field Node")}>
+            <Button onClick={() => handleAddNode("action", "Action Node")}>
               Add Action
             </Button>
           </CardFooter>
