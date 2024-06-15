@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { applyEdgeChanges, applyNodeChanges, addEdge } from "reactflow";
 
-const nodeSpacing = 200; // Horizontal spacing between nodes
-const rowSpacing = 250; // Vertical spacing between rows
+const nodeSpacing = 350; // Horizontal spacing between nodes
+const rowSpacing = 300; // Vertical spacing between rows
 const maxNodesPerRow = 5;
 
 const useFlowStore = create((set, get) => ({
@@ -80,7 +80,7 @@ const useFlowStore = create((set, get) => ({
           y: (row + 1) * rowSpacing + 20, // adjust y position based on row
         };
         connectorNode.position = {
-          x: ((currentRowNodes - 1) * nodeSpacing) / 2 + 77, // center end node based on number of nodes in the current row
+          x: ((currentRowNodes - 1) * nodeSpacing) / 2 + 157, // center end node based on number of nodes in the current row
           y: (row + 1) * rowSpacing - 70, // adjust y position based on row
         };
       }
@@ -237,7 +237,7 @@ const useFlowStore = create((set, get) => ({
         {
           id: "connector-1",
           data: { label: "Connector Node" },
-          position: { x: 77, y: 150 }, // Centered under the first row
+          position: { x: 157, y: 180 }, // Centered under the first row
           type: "connectorNode",
         },
         {

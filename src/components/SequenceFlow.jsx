@@ -1,9 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
-import ReactFlow, {
-  ReactFlowProvider,
-  MiniMap,
-  Controls,
-} from "reactflow";
+import ReactFlow, { ReactFlowProvider, MiniMap, Controls } from "reactflow";
 import "reactflow/dist/style.css";
 import useFlowStore from "store/flowStore";
 import CustomEdge from "components/Flow/CustomEdges";
@@ -65,6 +61,11 @@ const FlowComponent = () => {
   }
   const proOptions = { hideAttribution: true };
 
+  const fitViewOptions = {
+    padding: 1.2,
+    maxZoom: 150,
+  };
+
   return (
     <ReactFlowProvider>
       <div style={{ width: "100vw", height: "90vh", position: "absolute" }}>
@@ -78,6 +79,7 @@ const FlowComponent = () => {
           nodeTypes={nodeTypes}
           nodesDraggable={false}
           fitView
+          fitViewOptions={fitViewOptions}
           proOptions={proOptions}
         >
           <Controls />

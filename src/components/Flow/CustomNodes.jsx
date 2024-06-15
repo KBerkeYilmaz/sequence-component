@@ -49,8 +49,8 @@ export function InitialNode({ id, data }) {
 
   return (
     <>
-      <div className="relative h-20 w-40 rounded-md border border-foreground bg-[#ff0000] p-4 shadow-lg">
-        <Badge className="absolute top-0 w-8 -translate-y-4 translate-x-12">
+      <div className="relative h-20 min-h-28 w-80 rounded-md border border-foreground bg-[#ff0000] p-4 shadow-lg">
+        <Badge className="absolute top-0 w-8 -translate-y-4 translate-x-[126px]">
           {conditionBadgeIcons[data.type]}
         </Badge>
         {!actionNodeTriggered && <Line />}
@@ -69,13 +69,15 @@ export function InitialNode({ id, data }) {
             </Dialog>
           </div>
         )}
-        <h2 className="h-1/4 text-center text-xs font-semibold">
-          {data.type === "formNode"
-            ? "Form"
-            : data.type === "tagNode"
-              ? "Tag"
-              : "Field"}
-        </h2>
+        <div className="flex h-1/2 flex-col items-center justify-end pb-4">
+          <h2 className="text-center text-xs font-semibold">
+            {data.type === "formNode"
+              ? "Form"
+              : data.type === "tagNode"
+                ? "Tag"
+                : "Field"}
+          </h2>
+        </div>
         <div className="absolute bottom-0 left-0 flex h-1/2 w-full flex-col items-center justify-center rounded-b-md bg-slate-100 py-4">
           <h3 className="text-center text-xs">Completed</h3>
           <span className="text-center text-xs">0 subscribers</span>
@@ -116,17 +118,19 @@ export function ConditionNode({ id, data }) {
 
   return (
     <>
-      <div className="nodrag relative h-20 w-40 rounded-md border border-foreground bg-[#ff0000] p-4 shadow-lg">
-        <Badge className="absolute top-0 w-8 -translate-y-4 translate-x-12">
+      <div className="nodrag relative h-20 min-h-28 w-80 rounded-md border border-foreground bg-[#ff0000] p-4 shadow-lg">
+        <Badge className="absolute top-0 w-8 -translate-y-4 translate-x-[126px]">
           {conditionBadgeIcons[data.type]}
         </Badge>
-        <h2 className="h-1/4 text-center text-xs font-semibold">
-          {data.type === "formNode"
-            ? "Form"
-            : data.type === "tagNode"
-              ? "Tag"
-              : "Field"}
-        </h2>
+        <div className="flex h-1/2 flex-col items-center justify-end pb-4">
+          <h2 className="text-center text-xs font-semibold">
+            {data.type === "formNode"
+              ? "Form"
+              : data.type === "tagNode"
+                ? "Tag"
+                : "Field"}
+          </h2>
+        </div>
         <div className="absolute bottom-0 left-0 flex h-1/2 w-full flex-col items-center justify-center rounded-b-md bg-slate-100 py-4">
           <h3 className="text-center text-xs">Completed</h3>
           <span className="text-center text-xs">0 subscribers</span>
@@ -168,13 +172,15 @@ export function ActionNode({ id, data }) {
   return (
     <>
       <Handle type="target" position={Position.Top} id="a" />
-      <div className="nodrag relative h-20 w-40 rounded-md border border-foreground bg-[#4f74cd] p-4 shadow-lg">
-        <Badge className="absolute top-0 w-8 -translate-y-4 translate-x-12">
+      <div className="nodrag relative h-20 min-h-28 w-80 rounded-md border border-foreground bg-[#4f74cd] p-4 shadow-lg">
+        <Badge className="absolute top-0 w-8 -translate-y-4 translate-x-[126px]">
           {actionBadgeIcons[data.type]}
         </Badge>
-        <h2 className="h-1/4 text-center text-xs font-semibold">
-          {data.type === "action" ? "Action" : "Event"}
-        </h2>
+        <div className="flex h-1/2 flex-col items-center justify-end pb-4">
+          <h2 className="text-center text-xs font-semibold">
+            {data.type === "action" ? "Action" : "Event"}
+          </h2>
+        </div>
         <div className="absolute bottom-0 left-0 flex h-1/2 w-full flex-col items-center justify-center rounded-b-md bg-slate-100 py-4">
           <h3 className="text-center text-xs">Completed</h3>
           <span className="text-center text-xs">0 subscribers</span>
@@ -230,8 +236,8 @@ export function EndNode({ data, props }) {
   return (
     <>
       <Handle type="target" position={Position.Top} id="final-node-handle" />
-      <div className="nodrag relative h-fit w-40 rounded-md border border-foreground bg-[#16134c] p-4 shadow-lg">
-        <h2 className="h-1/4 text-center text-xs font-bold tracking-wider text-muted">
+      <div className="nodrag relative flex h-fit min-h-28 w-80 items-center justify-center rounded-md border border-foreground bg-[#16134c] p-4 shadow-lg">
+        <h2 className="text-center text-xs font-bold tracking-wider text-muted">
           End of automation
         </h2>
       </div>

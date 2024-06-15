@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
-import { SlidersHorizontal, BarChartHorizontal, SquarePen } from "lucide-react";
+import { SlidersHorizontal, BarChartHorizontal, SquarePen, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [campaignPaused, setCampaignPaused] = useState(false);
@@ -56,6 +56,9 @@ const Header = () => {
     <header className="z-50 w-screen border-2 border-b border-slate-200 bg-white shadow-sm">
       <nav className="flex items-center justify-between gap-4 px-6 py-2">
         <div className="flex items-center justify-start gap-4">
+          <Button variant="ghost">
+          <X className="text-blue-500" size={24} />
+          </Button>
           <Input className="w-60 p-0" />
           <Switch
             className="bg-blue-500 text-blue-500"
@@ -68,8 +71,7 @@ const Header = () => {
             className="py-2 text-base hover:text-blue-500"
             asChild
           >
-            <NavLink
-              exact
+            <Link
               to="/"
               className={({ isActive }) =>
                 isActive ? "font-bold text-blue-700" : "text-blue-500"
@@ -77,15 +79,14 @@ const Header = () => {
             >
               <SquarePen className="mr-1.5" size={18} />
               Content
-            </NavLink>
+            </Link>
           </Button>
           <Button
             variant="ghost"
             className="py-2 text-base hover:text-blue-500"
             asChild
           >
-            <NavLink
-              exact
+            <Link
               to="/automation"
               className={({ isActive }) =>
                 isActive
@@ -95,15 +96,14 @@ const Header = () => {
             >
               <BarChartHorizontal className="mr-1.5" size={18} />
               Visual Automation
-            </NavLink>
+            </Link>
           </Button>
           <Button
             variant="ghost"
             className="py-2 text-base hover:text-blue-500"
             asChild
           >
-            <NavLink
-              exact
+            <Link
               to="/sequence-settings"
               className={({ isActive }) =>
                 isActive ? "font-bold text-blue-700" : "text-blue-500"
@@ -111,7 +111,7 @@ const Header = () => {
             >
               <SlidersHorizontal className="mr-1.5" size={18} />
               Sequence Settings
-            </NavLink>
+            </Link>
           </Button>
         </div>
       </nav>
